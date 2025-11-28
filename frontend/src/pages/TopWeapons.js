@@ -43,8 +43,8 @@ export default function TopWeapons() {
 
   return (
     <div className="val-container">
-      <header className="val-header" style={{borderColor: '#06d6a0'}}>
-        <h1 style={{color: '#06d6a0'}}>Top Favorited Weapons</h1>
+      <header className="val-header" style={{borderBottomColor: '#06d6a0'}}>
+        <h1 style={{color: '#06d6a0'}}>Global Top Weapons</h1>
         <div className="val-header-nav">
           <button onClick={handleLogout} className="val-button">
             Logout
@@ -61,8 +61,24 @@ export default function TopWeapons() {
             const weaponData = allWeapons[weapon.weapon_uuid];
             return weaponData ? (
               <div key={weapon.weapon_uuid} className="val-card val-card-green">
-                <Link to={`/weapon/${weapon.weapon_uuid}`} state={{ from: '/top-weapons' }} style={{textDecoration: 'none'}}>
-                  <h2 style={{ color: "#06d6a0" }}>#{index + 1}</h2>
+                <Link to={`/weapon/${weapon.weapon_uuid}`} state={{ from: '/top-weapons' }} style={{textDecoration: 'none', width: '100%'}}>
+                  <div style={{
+                      position: 'absolute', 
+                      top: '10px', 
+                      left: '10px', 
+                      background: '#06d6a0', 
+                      color: 'black', 
+                      width: '30px', 
+                      height: '30px', 
+                      borderRadius: '50%', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      fontWeight: 'bold',
+                      fontFamily: 'Bebas Neue'
+                  }}>
+                      {index + 1}
+                  </div>
                   <div className="val-card-image-container" style={{height: '80px'}}>
                     <img
                       src={weaponData.displayIcon}
@@ -72,7 +88,11 @@ export default function TopWeapons() {
                   </div>
                   <h3>{weaponData.displayName}</h3>
                 </Link>
-                <p className="val-card-leaderboard-count-green">{weapon.count} Favorites</p>
+                
+                <div style={{marginTop: '10px', borderTop: '1px solid #555', paddingTop: '10px', width: '100%'}}>
+                    <p className="val-card-leaderboard-count-green">{weapon.percentage}%</p>
+                    <p style={{color: '#aaa', fontSize: '12px', marginTop: '-5px'}}>Favorited by users</p>
+                </div>
               </div>
             ) : null;
           })

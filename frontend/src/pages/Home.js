@@ -42,7 +42,6 @@ export default function Home() {
     setFilteredAgents(tempAgents);
   }, [searchTerm, selectedRole, allAgents]);
 
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.location.href = "/";
@@ -69,30 +68,34 @@ export default function Home() {
   return (
     <div className="val-container">
       <header className="val-header">
-        <h1>Valorant Agent Tracker</h1>
+        <h1>Valorant Tracker</h1>
         <div className="val-header-nav">
-          <button onClick={handleLogout} className="val-button">
+            <button onClick={handleLogout} className="val-button" style={{borderColor: '#fff', color: '#fff'}}>
             Logout
-          </button>
-          <Link to="/top-agents" className="val-button val-button-green"> 
-            Top Agents
-          </Link>
-          <Link to="/top-weapons" className="val-button val-button-green">
-            Top Weapons
-          </Link>
-          <Link to="/weapons" className="val-button val-button-green">
-            Weapons
-          </Link>
-          <Link to="/favorites" className="val-button">
-            My Fave Agents
-          </Link>
-          <Link to="/favorite-weapons" className="val-button">
-            My Fave Weapons
-          </Link>
+            </button>
         </div>
       </header>
+
+      <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '15px', marginBottom: '40px'}}>
+          <Link to="/top-agents" className="val-button" style={{fontSize: '18px', padding: '15px 30px'}}>
+             👑 Top Agents
+          </Link>
+          <Link to="/top-weapons" className="val-button val-button-green" style={{fontSize: '18px', padding: '15px 30px'}}>
+             🔫 Top Weapons
+          </Link>
+          <Link to="/weapons" className="val-button val-button-green">
+             View All Weapons
+          </Link>
+          <Link to="/favorites" className="val-button">
+             My Fave Agents
+          </Link>
+          <Link to="/favorite-weapons" className="val-button val-button-green">
+             My Fave Weapons
+          </Link>
+      </div>
       
       <div className="val-filter-container">
+        <h2 style={{color: '#ff4655'}}>Agents Database</h2>
         <input
           type="text"
           placeholder="Search agents..."
@@ -113,14 +116,13 @@ export default function Home() {
         </div>
       </div>
 
-      <h2>All Agents</h2>
       <div className="val-grid">
         {filteredAgents.length > 0 ? (
           filteredAgents.map((agent) => {
             const isFav = favorites.some((f) => f.agent_uuid === agent.uuid);
             return (
               <div key={agent.uuid} className="val-card">
-                <Link to={`/agent/${agent.uuid}`} state={{ from: 'home' }} style={{textDecoration: 'none'}}>
+                <Link to={`/agent/${agent.uuid}`} state={{ from: 'home' }} style={{textDecoration: 'none', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
                   <div className="val-card-image-container">
                     <img
                       src={agent.displayIcon}
@@ -134,6 +136,7 @@ export default function Home() {
                 <button
                   onClick={() => toggleFavorite(agent)}
                   className={`val-button-fav ${isFav ? "remove" : "add"}`}
+                  style={{marginTop: '10px'}}
                 >
                   {isFav ? "Unfavorite" : "Favorite"}
                 </button>

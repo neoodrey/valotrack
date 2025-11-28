@@ -44,14 +44,28 @@ class MostFavoritedAgentsView(APIView):
     permission_classes = [permissions.AllowAny] 
 
     def get(self, request, format=None):
+        total_users = User.objects.count()
+        if total_users == 0:
+            total_users = 1 
+
         top_agents = Favorite.objects.values(
             'agent_name', 
             'agent_uuid'
         ).annotate(
-            count=Count('agent_name')
+            count=Count('agent_uuid')
         ).order_by('-count')[:10]
 
-        return Response(top_agents, status=status.HTTP_200_OK)
+        data = []
+        for item in top_agents:
+            percentage = (item['count'] / total_users) * 100
+            data.append({
+                'agent_name': item['agent_name'],
+                'agent_uuid': item['agent_uuid'],
+                'count': item['count'],
+                'percentage': round(percentage, 1)
+            })
+
+        return Response(data, status=status.HTTP_200_OK)
 
 class UserFavoritesSearchView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -80,16 +94,29 @@ class UserFavoritesSearchView(APIView):
             status=status.HTTP_200_OK
         )
 
-# --- NEW: TOP WEAPONS VIEW ---
 class MostFavoritedWeaponsView(APIView):
     permission_classes = [permissions.AllowAny] 
 
     def get(self, request, format=None):
+        total_users = User.objects.count()
+        if total_users == 0:
+            total_users = 1
+
         top_weapons = FavoriteWeapon.objects.values(
             'weapon_name', 
             'weapon_uuid'
         ).annotate(
-            count=Count('weapon_name')
+            count=Count('weapon_uuid')
         ).order_by('-count')[:10]
 
-        return Response(top_weapons, status=status.HTTP_200_OK)
+        data = []
+        for item in top_weapons:
+            percentage = (item['count'] / total_users) * 100
+            data.append({
+                'weapon_name': item['weapon_name'],
+                'weapon_uuid': item['weapon_uuid'],
+                'count': item['count'],
+                'percentage': round(percentage, 1)
+            })
+
+        return Response(data, status=status.HTTP_200_OK)

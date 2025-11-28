@@ -46,7 +46,7 @@ export default function TopAgents() {
   return (
     <div className="val-container">
       <header className="val-header">
-        <h1>Top Favorited Agents</h1>
+        <h1>Global Top Agents</h1>
         <div className="val-header-nav">
           <button onClick={handleLogout} className="val-button">
             Logout
@@ -63,8 +63,24 @@ export default function TopAgents() {
             const agentData = allAgents[agent.agent_uuid];
             return agentData ? (
               <div key={agent.agent_uuid} className="val-card">
-                <Link to={`/agent/${agent.agent_uuid}`} state={{ from: '/top-agents' }} style={{textDecoration: 'none'}}>
-                  <h2 style={{ color: "#ff4655" }}>#{index + 1}</h2>
+                <Link to={`/agent/${agent.agent_uuid}`} state={{ from: '/top-agents' }} style={{textDecoration: 'none', width: '100%'}}>
+                  <div style={{
+                      position: 'absolute', 
+                      top: '10px', 
+                      left: '10px', 
+                      background: '#ff4655', 
+                      color: 'white', 
+                      width: '30px', 
+                      height: '30px', 
+                      borderRadius: '50%', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      fontWeight: 'bold',
+                      fontFamily: 'Bebas Neue'
+                  }}>
+                      {index + 1}
+                  </div>
                   <div className="val-card-image-container">
                     <img
                       src={agentData.displayIcon}
@@ -74,7 +90,11 @@ export default function TopAgents() {
                   </div>
                   <h3>{agentData.displayName}</h3>
                 </Link>
-                <p className="val-card-leaderboard-count">{agent.count} Favorites</p>
+                
+                <div style={{marginTop: '10px', borderTop: '1px solid #555', paddingTop: '10px', width: '100%'}}>
+                    <p className="val-card-leaderboard-count">{agent.percentage}%</p>
+                    <p style={{color: '#aaa', fontSize: '12px', marginTop: '-5px'}}>Favorited by users</p>
+                </div>
               </div>
             ) : null;
           })
